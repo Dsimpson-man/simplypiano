@@ -2,7 +2,7 @@
 
 解锁 Simply Piano 高级会员（一年期 / 家庭版）的 Quantumult X 重写规则。
 
-> 只在 **Quantumult X** 上验证过。小火箭没有测试，不保证可用。
+> Quantumult X 已验证可用；Shadowrocket 提供同等配置，未实测。
 
 ---
 
@@ -10,8 +10,9 @@
 
 | 文件 | 作用 |
 |---|---|
-| `SimplyPiano.js` | **重写资源**，在 QX 里引用这个 |
-| `sp_unlock_v2.js` | 脚本本体，由上面的资源文件引用，不需要手动处理 |
+| `SimplyPiano.js` | **Quantumult X 重写资源**，在 QX 里引用这个 |
+| `SimplyPiano_shadowrocket.conf` | **Shadowrocket 模块**，在小火箭里引用这个 |
+| `sp_unlock_v2.js` | 脚本本体，由上面两个文件引用，不需要手动处理 |
 
 ---
 
@@ -45,6 +46,20 @@
 > 等于没装，所有 HTTPS 改写都会静默失效。
 
 5. 打开 Simply Piano，**用邮箱登录**（不要用「通过 Apple 登录」，见下方说明）
+
+### Shadowrocket 用法
+
+1. 小火箭 → 配置 → 右上角 `+` → 从 URL 添加模块：
+
+   ```
+   https://raw.githubusercontent.com/Dsimpson-man/simplypiano/main/SimplyPiano_shadowrocket.conf
+   ```
+
+2. 打开该模块的开关
+3. 小火箭 → 设置 → **HTTPS 解密** 打开
+4. 点「安装证书」，去 iOS 设置安装描述文件
+5. **iOS 设置 → 通用 → 关于本机 → 证书信任设置** → 打开 Shadowrocket 证书
+6. 打开 Simply Piano，**用邮箱登录**
 
 ---
 
