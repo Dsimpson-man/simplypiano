@@ -1,8 +1,8 @@
 # Simply Piano Premium Unlock
 
-解锁 Simply Piano 高级会员（一年期 / 家庭版）的 Quantumult X 重写规则。
+解锁 Simply Piano 高级会员（一年期 / 家庭版）的代理重写规则。
 
-> Quantumult X 已验证可用；Shadowrocket 提供同等配置，未实测。
+支持 **Quantumult X** 和 **Shadowrocket**。所有文件统一托管在本仓库。
 
 ---
 
@@ -14,52 +14,47 @@
 | `SimplyPiano_shadowrocket.conf` | **Shadowrocket 模块**，在小火箭里引用这个 |
 | `sp_unlock_v2.js` | 脚本本体，由上面两个文件引用，不需要手动处理 |
 
+所有地址统一使用 GitHub 原始地址（`raw.githubusercontent.com`）。
+
 ---
 
-## 使用方法
+## Quantumult X
 
 1. QX → 右下角 **风车** → **重写** → **规则资源** → 右上角 `+`
-2. 粘贴下面的地址并保存：
+2. 粘贴：
 
    ```
    https://raw.githubusercontent.com/Dsimpson-man/simplypiano/main/SimplyPiano.js
    ```
 
-   如果 raw 打不开，换备用地址：
-
-   ```
-   https://cdn.jsdelivr.net/gh/Dsimpson-man/simplypiano@main/SimplyPiano.js
-   ```
-
 3. 打开这条资源的开关
 
----
+## Shadowrocket
 
-## 必须打开的开关（漏一个就完全无效）
-
-1. **QX 首页 → 重写** 开关
-2. **QX 首页 → MitM** 开关
-3. **QX → 风车 → 设置 → MitM → 证书**：生成 → 安装描述文件
-4. **iOS 设置 → 通用 → 关于本机 → 证书信任设置** → 打开 Quantumult X 的根证书
-
-> 第 4 步和第 3 步是两件事。只装了描述文件但没在「证书信任设置」里打开，
-> 等于没装，所有 HTTPS 改写都会静默失效。
-
-5. 打开 Simply Piano，**用邮箱登录**（不要用「通过 Apple 登录」，见下方说明）
-
-### Shadowrocket 用法
-
-1. 小火箭 → 配置 → 右上角 `+` → 从 URL 添加模块：
+1. 小火箭 → **配置** → 右上角 `+` → **从 URL 添加**
+2. 粘贴：
 
    ```
    https://raw.githubusercontent.com/Dsimpson-man/simplypiano/main/SimplyPiano_shadowrocket.conf
    ```
 
-2. 打开该模块的开关
-3. 小火箭 → 设置 → **HTTPS 解密** 打开
-4. 点「安装证书」，去 iOS 设置安装描述文件
-5. **iOS 设置 → 通用 → 关于本机 → 证书信任设置** → 打开 Shadowrocket 证书
-6. 打开 Simply Piano，**用邮箱登录**
+3. 打开该模块的开关
+
+> 如果小火箭里从 URL 添加超时，见下方「小火箭下载超时」一节。
+
+---
+
+## 必须打开的开关（漏一个就完全无效）
+
+1. **重写 / Rewrite** 开关
+2. **MitM / HTTPS 解密** 开关
+3. 生成并安装证书
+4. **iOS 设置 → 通用 → 关于本机 → 证书信任设置** → 打开对应 App 的根证书
+
+> 第 3 步和第 4 步是两件事。只装了描述文件但没在「证书信任设置」里打开，
+> 等于没装，所有 HTTPS 改写都会静默失效。
+
+5. 打开 Simply Piano，**用邮箱登录**（不要用「通过 Apple 登录」）
 
 ---
 
@@ -77,19 +72,43 @@
 Simply Piano 会缓存账号信息，`accountAuthenticate` 只在登录时调用。
 改完配置后必须**退出登录 → 重新登录**，否则看到的还是旧状态。
 
-### 3. 脚本地址建议用 raw
+### 3. 脚本更新后要清缓存
 
-QX 下载远程脚本失败时**不会报错**，只是静默不执行，
-表现为「配置导入成功、看着正常、但完全没效果」。
+客户端会缓存下载过的脚本，文件名不变就不会重新下载。
+如果改了脚本但没生效，或旧版本还在弹窗：
 
-如果怀疑脚本没加载，可以把资源里的脚本地址换成备用 CDN：
+- 删掉资源/模块，重新添加一次
+- 或给脚本换个文件名（如 `sp_unlock_v2.js` → `sp_unlock_v3.js`）并同步修改引用
 
-| 地址 | 说明 |
-|---|---|
-| `raw.githubusercontent.com` | 时通时不通，不稳定 |
-| `cdn.jsdelivr.net` | 国内一般可用 |
-| `gcore.jsdelivr.net` | jsDelivr 备用节点 |
-| `fastly.jsdelivr.net` | jsDelivr 备用节点 |
+### 4. 小火箭下载超时
+
+小火箭「从 URL 添加」配置时，这个请求**可能不走代理隧道**，
+所以 `raw.githubusercontent.com` 会直接超时（QX 的脚本下载走代理，一般没问题）。
+
+绕过方法：
+
+**方式 A：用 Safari 打开**
+
+```
+https://raw.githubusercontent.com/Dsimpson-man/simplypiano/main/SimplyPiano_shadowrocket.conf
+```
+
+Safari 会弹出「在 Shadowrocket 中打开」，点一下即可导入。
+
+**方式 B：手动新建**
+
+复制下面的内容，在小火箭里新建模块后粘贴：
+
+```
+#!name=Simply Piano Premium
+#!desc=Simply Piano 高级会员解锁（Shadowrocket）
+
+[Script]
+http-response ^https?://(asla\.joytunes\.com|alicdn\.joytunescn\.com)/server/asla/accounts/accountAuthenticate script-path=https://raw.githubusercontent.com/Dsimpson-man/simplypiano/main/sp_unlock_v2.js, requires-body=1, timeout=60
+
+[MITM]
+hostname = asla.joytunes.com, alicdn.joytunescn.com
+```
 
 ---
 
@@ -158,41 +177,34 @@ https://alicdn.joytunescn.com/server/asla/accounts/accountAuthenticate
 
 ## 踩坑记录
 
-搭建过程中遇到的问题，按出现顺序：
-
 1. **`[Rewrite]` 不是有效段落**
-   网上的配置常写成 Surge 风格：
-
-   ```
-   [Rewrite]
-   ^https?://... url script-response-body https://...
-   ```
-
-   Quantumult X 不认这个。正确写法是 `[rewrite_local]`，
-   且脚本用 `url script-response-body <脚本地址>`。
+   网上的配置常写成 Surge 风格 `[Rewrite]` + `url script-response-body`，
+   Quantumult X 不认。QX 要用 `[rewrite_local]`，小火箭要用 `[Script]`。
 
 2. **正则里的点没有转义**
    `joytunes.com` 会误匹配 `joytunesXcom`，应写成 `joytunes\.com`。
 
 3. **MitM / 重写开关没开**
-   这是最隐蔽的问题。开关关着时，规则一条都不会执行，
-   但界面上不会有任何提示，看起来「配置完全正常」。
+   最隐蔽的问题。开关关着时规则一条都不执行，界面上没有任何提示。
 
 4. **证书只装了没信任**
    iOS 里装描述文件和「证书信任设置」是两步，只做第一步不生效。
 
-5. **QX 下载远程脚本失败不报错**
-   表现为配置正常但无效果。改用 jsDelivr 或本地脚本解决。
+5. **下载远程脚本失败不报错**
+   表现为配置正常但无效果。客户端会静默跳过。
 
 6. **用 JSON 解析再重新序列化有风险**
    改变字段顺序、数字类型可能让 App 校验失败。
-   本项目已验证当前写法可用，但如果你要自己改，优先考虑字符串替换。
 
 7. **Apple 登录被拦截**
    改用邮箱登录即可。
 
 8. **改完必须重新登录**
    App 缓存账号信息，不重新登录看不到效果。
+
+9. **URL 正则不要写太宽**
+   早期版本用 `/server/asla/accounts/` 前缀，把退出登录等接口也拦了，
+   导致 App 报连接错误。现在只精确匹配 `accountAuthenticate`。
 
 ---
 

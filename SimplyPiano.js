@@ -3,9 +3,6 @@
  *
  * 引用地址（Quantumult X 规则资源）：
  * https://raw.githubusercontent.com/Dsimpson-man/simplypiano/main/SimplyPiano.js
- *
- * 备用地址（国内更稳）：
- * https://cdn.jsdelivr.net/gh/Dsimpson-man/simplypiano@main/SimplyPiano.js
  ********************************/
 
 [mitm]
